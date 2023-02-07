@@ -1,36 +1,66 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import authImage from '../assets/undraw_personal_email_re_4lx7.svg'
+import React from "react";
+import { Link } from "react-router-dom";
+import authImage from "../assets/undraw_personal_email_re_4lx7.svg";
+import { useState } from "react";
+import axios from "axios";
 const Register = () => {
-  return (
+// send user to the database
+const [inputs, setInputs]=useState({
+  username:"",
+  email:"",
+  password:""
+})
 
-    
-    <div className="auth-container">
+// handleChange, changes whenever we change our inputs
+const handleChange=(e)=>{
+  setInputs(prev=>({...prev, [e.target.name] : e.target.value}))
+}
+console.log(inputs)
 
-<div className="auth-img">
 
-<img src={authImage} alt="" />
-</div>
+// handleSubmit, to handle and
 
-  <div className="auth">
-  
-  <h1>Register</h1>
+const handleSubmit= async e=>{
+  e.preventDefault();
 
-  <form action="">
-  <input required type="text"  placeholder='username'/>
-  <input required type="email"  placeholder='email'/>
+  try {
+    // 
 
-  <input required type="password" placeholder='password' />
+    const res=await axios.post("/auth/register", inputs);
+    console.log(res)
 
-  <button className="btn">Login</button>
-  <div className="text">
-  <p>This is an error</p>
-  <span>Don't you have an account? <Link to="/login">Login</Link></span>
-  </div>
-  </form>
-  </div>
-  </div>
-  )
+  } catch (err) {
+ console.log(err)   
+  }
+
 }
 
-export default Register
+  return (
+    <div className="auth-container">
+      <div className="auth-img">
+        <img src={authImage} alt="" />
+      </div>
+
+      <div className="auth">
+        <h1>Register</h1>
+
+        <form action="">
+          <input required type="text" placeholder="username" name="username" onChange={handleChange}/>
+          <input required type="email" placeholder="email" name="email" onChange={handleChange}/>
+
+          <input required type="password" placeholder="password" name="password" onChange={handleChange}/>
+
+          <button className="btn" onClick={handleSubmit}>Login</button>
+          <div className="text">
+            <p>This is an error</p>
+            <span>
+              Don't you have an account? <Link to="/login">Login</Link>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
