@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authImage from "../assets/undraw_personal_email_re_4lx7.svg";
 import { useState } from "react";
 import axios from "axios";
@@ -10,6 +10,17 @@ const [inputs, setInputs]=useState({
   email:"",
   password:""
 })
+
+
+// error state
+
+const [error, setError]=useState(null);
+
+
+// navigate state
+
+
+const navigate=useNavigate();
 
 // handleChange, changes whenever we change our inputs
 const handleChange=(e)=>{
@@ -27,10 +38,13 @@ const handleSubmit= async e=>{
     // 
 
     const res=await axios.post("/auth/register", inputs);
-    console.log(res)
-
+    // console.log(res)
+    navigate("/login");
   } catch (err) {
- console.log(err)   
+//  console.log(err)   
+// catch error and show it to the user
+
+setError(err.response.data);
   }
 
 }
@@ -50,9 +64,9 @@ const handleSubmit= async e=>{
 
           <input required type="password" placeholder="password" name="password" onChange={handleChange}/>
 
-          <button className="btn" onClick={handleSubmit}>Login</button>
+          <button className="btn" onClick={handleSubmit}>Register</button>
           <div className="text">
-            <p>This is an error</p>
+            {error && <p>{error}</p> }
             <span>
               Don't you have an account? <Link to="/login">Login</Link>
             </span>
