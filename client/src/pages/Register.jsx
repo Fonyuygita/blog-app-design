@@ -37,7 +37,7 @@ const handleSubmit= async e=>{
   try {
     // 
 
-    const res=await axios.post("/auth/register", inputs);
+    await axios.post("/auth/register", inputs);
     // console.log(res)
     navigate("/login");
   } catch (err) {

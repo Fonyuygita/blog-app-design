@@ -73,7 +73,7 @@ const posts=[
 
     <div className="content">
     
-    <Link to={`/post.id`} className="link">
+    <Link to={`/post/${post.id}`} className="link">
     <h1>{post.title}</h1>
     <p>{post.desc}</p>
     <button>Read More</button>

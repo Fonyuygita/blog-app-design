@@ -2,7 +2,8 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import authImage from '../assets/undraw_personal_email_re_4lx7.svg'
 import { useState } from 'react'
-import axios from 'axios'
+import { useContext } from 'react'
+import { AuthContext } from '../context/authContext'
 
 const Login = () => {
 
@@ -22,6 +23,9 @@ const [error, setError]=useState(null);
 
 const navigate=useNavigate();
 
+const {login}=useContext(AuthContext);
+
+
 // now create the handlesubmit btn to submit this stuffs into our state which is then pass via a database to our api end point
 
 const handleChange=e=>{
@@ -31,17 +35,19 @@ console.log(inputs);
 
 // now let us create our handleSUBMIT functionality to handle subnmit when we want to login
 
-const handleSubmit= async e=>{
+const handleSubmit= async (e)=>{
   e.preventDefault();
 try {
   // post our result to our api end point
-  const res=await axios.post("/auth/login", inputs);
+  await login(inputs);
+  
   navigate("/");
+  
   
 
 } catch (err) {
   // catch error and show it to the user
-  setError(err.response.date);
+  setError(err.response.data);
   
 }
   
@@ -63,7 +69,7 @@ try {
   <input type="text"  placeholder='username' name='username' onChange={handleChange} />
   <input type="password" placeholder='password'name='password' onChange={handleChange} />
 
-  <button className="btn">Login</button>
+  <button className="btn" onClick={handleSubmit}>Login</button>
   <div className="text">
  {error && <p>{error}</p>}
   <span>Don't you have an account? <Link to="/register">Register</Link></span>
